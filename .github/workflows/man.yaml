@@ -1,0 +1,41 @@
+name: man jpbernius
+
+on:
+  push:
+    branches: [ "man" ]
+
+jobs:
+  html:
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: ronn --html
+        run: bundle exec ronn --html --style=toc --organization="Jan Philip Bernius"  README.md
+
+      - run: |
+          mkdir -p out
+          mv README.1.html out/index.html
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'out'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
