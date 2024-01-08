@@ -24,6 +24,9 @@ jobs:
           ruby-version: '3.3'
           bundler-cache: true
 
+      - name: Configure Umami
+        run: echo '${{ vars.UMAMI_SCRIPT }}' >> README.md
+
       - name: ronn --html
         run: bundle exec ronn --html --style=toc --organization="Jan Philip Bernius"  README.md
 
@@ -39,3 +42,35 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  mirror:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        environment: ["gitlab.com", "code.bernius.net"]
+
+    environment: ${{ matrix.environment }}
+
+    env:
+      SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup SSH Private Key
+        run: |
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.SSH_KEY }}"
+
+      - name: Setup SSH Host Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ vars.SSH_HOST_KEY }}" >> ~/.ssh/known_hosts
+
+      - name: Setup Git Remote
+        run: git remote add mirror ${{ vars.GIT_REMOTE }}
+      
+      - run: git push --force mirror man

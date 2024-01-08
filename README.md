@@ -82,7 +82,7 @@ Taught the courses Introduction to Software Engineering (~2,200 students), Patte
 ## ACKNOWLEDGEMENTS
 
 This `man` style personal page is inspired by Major Haydens [major_hayden(1)] entry.
-the [jpbernius(1)] page is rendered from Markdown using [ronn].
+The [jpbernius(1)] page is rendered from Markdown using [ronn].
 
 [major_hayden(1)]: https://majorhayden.com
 [jpbernius(1)]: https://jpbernius.com
