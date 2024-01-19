@@ -48,7 +48,7 @@ jobs:
 
     strategy:
       matrix:
-        environment: ["gitlab.com", "code.bernius.net"]
+        environment: ["gitlab.com", "code.bernius.net", "codeberg.org"]
 
     environment: ${{ matrix.environment }}
 
