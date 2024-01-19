@@ -30,6 +30,9 @@ jobs:
       - name: ronn --html
         run: bundle exec ronn --html --style=toc --organization="Jan Philip Bernius"  README.md
 
+      - name: Mastodon Verification
+        run: sed -i 's|<a href="https://hachyderm.io/@jpbernius">|<a href="https://hachyderm.io/@jpbernius" rel="me">|g' ./README.1.html
+
       - run: |
           mkdir -p out
           mv README.1.html out/index.html
