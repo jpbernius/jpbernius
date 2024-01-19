@@ -37,6 +37,11 @@ jobs:
           mkdir -p out
           mv README.1.html out/index.html
 
+      - name: Mastodon Webfinger
+        run: |
+          mkdir -p out/.well-known
+          curl -o out/.well-known/webfinger "https://hachyderm.io/.well-known/webfinger?resource=acct:jpbernius@hachyderm.io"
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
